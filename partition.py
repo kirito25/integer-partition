@@ -32,13 +32,18 @@ def product(numbers):
         for j in i:
             x *= j
         try :
-            if x > num_map[key][1]:
-                num_map[key] = (i, x)
+            if x > num_map[key][0][1]:
+                num_map[key] = [(i, x)]
+            if x == num_map[key][0][1] and (i,x) not in num_map[key]:
+                num_map[key] += [(i, x)]
         except KeyError:
-            num_map[key] = (i, x)
+            num_map[key] = [(i, x)]
+
     for key in num_map.keys():
-        i, x = num_map[key]
-        print("Number %s is the sum of %s whose product is %s" % (key, i, x))
+        for val in num_map[key]:
+            i, x = val
+            print("Number %s is the sum of %s whose product is %s" % (key, i, x))
+        print('')
 
 def main():
     doall = False
