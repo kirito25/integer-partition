@@ -1,32 +1,20 @@
 import sys
 
 """
-Generates all the partitions of a number n
+Generates all the partitions of number n.
+If doall is true it will also generate the
+partitions for n-1,...,0
 """
-def partitions(n):
-    # base case of recursion: zero
-    if n == 0:
-        yield [0]
-        return
-
-    # recurively build partition
-    for p in partitions( n - 1):
-        yield [1] + p 
-        if p and (len(p) < 2 or p[1] > p[0]):
-            yield [p[0] + 1] + p[1:]
-
-"""
-Generates all the partitions of number n, n-1,...,0
-"""
-def all_n_partitions(n):
+def partitions(n, doall=False):
     # base case of recursion: zero 
     if n == 0:
         yield [0]
         return
 
     # recurively build partition
-    for p in all_n_partitions(n - 1):
-        yield p 
+    for p in partitions(n - 1, doall):
+        if doall:
+            yield p 
         yield [1] + p 
         if p and (len(p) < 2 or p[1] > p[0]):
             yield [p[0] + 1] + p[1:]
@@ -56,10 +44,7 @@ def main():
     doall = False
     if len(sys.argv) > 2 and sys.argv[2] == 'doall':
         doall = True
-    if doall:
-        result = all_n_partitions(int(sys.argv[1]))
-    else:
-        result = partitions(int(sys.argv[1]))
+    result = partitions(int(sys.argv[1]), doall)
     product(result)
 
 if __name__ == '__main__':
